@@ -179,7 +179,17 @@ LEFT OUTER JOIN Members AS recommender ON recommender.memid = m.recommendedby
 ORDER BY m.surname, m.firstname
 
 /* Q12: Find the facilities with their usage by member, but not guests */
-
-
+SELECT facid,slots*f.membercost AS usageamount
+FROM Bookings
+INNER JOIN Facilities AS f
+ON f.facid = b.facid
+WHERE memid <> 0
+GROUP BY facid
 /* Q13: Find the facilities usage by month, but not guests */
 
+SELECT B.facid,EXTRACT(Month From starttime) AS month,f.membercost*B.slots AS usageAmount
+FROM Bookings AS B
+INNER JOIN Facilities AS f
+ON f.facid = b.facid
+WHERE memid <> 0
+GROUP BY facid,month
